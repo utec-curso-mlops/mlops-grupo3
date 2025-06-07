@@ -16,14 +16,7 @@ DATA_CONFIG = {
 MERGE_CONFIG = {
     "join_keys": ["ID_CORRELATIVO", "CODMES"],  # Columnas para hacer el join
     "join_type": "left",  # Tipo de join
-    "target_column": "ATTRITION"  # Columna objetivo
-}
-
-# Configuración de división train/test
-SPLIT_CONFIG = {
-    "test_size": 0.2,
-    "random_state": 42,
-    "stratify": True  # Mantener proporción de clases
+    "target_column": "ATTRITION"  # Columna objetivo (solo en datos train)
 }
 
 # Configuración de rutas
