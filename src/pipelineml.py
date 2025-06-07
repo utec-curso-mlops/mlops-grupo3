@@ -6,9 +6,20 @@ from model_trainer import train_model
 from model_registry import register_model
 
 def main():
-    # Load data
-    data = load_data("D:/Proyectos/mlflow/repositorios/Introduction-to-mlflow/data/in/application_data.csv")
-    # "C:\Users\AnaLisset\Desktop\curso MLOPS\Trabajo_Final\mlops-proyecto-final/data/in/"
+    
+    # Load data - TRAIN (entrenamiento) y OOT (evaluación)
+    print("📊 Cargando datos de entrenamiento...")
+    train_data = load_data("train")  # DataFrame con target ATTRITION
+    
+    print("\n📊 Cargando datos de evaluación (Out of Time)...")
+    oot_data = load_data("oot")  # DataFrame SIN target (para predicción)
+    
+    print(f"\n✅ Datos cargados:")
+    print(f"   🎯 Train: {train_data.shape} (con target)")
+    print(f"   🎯 OOT: {oot_data.shape} (sin target)")
+
+    # Prepare data - Solo datos de entrenamiento
+    X_train, X_test, y_train, y_test = prepare_data(train_data)
 
     # Prepare data
     X_train, X_test, y_train, y_test = prepare_data(data)
