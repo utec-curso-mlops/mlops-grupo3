@@ -1,11 +1,10 @@
 import pandas as pd
 import os
-from sklearn.model_selection import train_test_split
 from pathlib import Path
 
 # Importar configuración
 try:
-    from config import DATA_CONFIG, MERGE_CONFIG, SPLIT_CONFIG, PATH_CONFIG
+    from config import DATA_CONFIG, MERGE_CONFIG, PATH_CONFIG
     print("✅ Configuración cargada desde config.py")
 except ImportError:
     print("⚠️  config.py no encontrado, usando configuración por defecto")
@@ -24,11 +23,6 @@ except ImportError:
         "join_keys": ["ID_CORRELATIVO", "CODMES"],
         "join_type": "left",
         "target_column": "ATTRITION"
-    }
-    SPLIT_CONFIG = {
-        "test_size": 0.2,
-        "random_state": 42,
-        "stratify": True
     }
     PATH_CONFIG = {
         "data_folder": "data",
@@ -165,99 +159,34 @@ def load_and_merge_datasets(dataset_type="train",
         print(f"❌ Error en el cruce: {e}")
         raise
 
-def split_train_test(data, 
-                   target_column=None, 
-                   test_size=None, 
-                   random_state=None,
-                   stratify=None):
-    """
-    Divide el dataset en train y test de manera flexible
-    
-    Args:
-        data (pd.DataFrame): Dataset combinado
-        target_column (str): Nombre de la columna objetivo
-        test_size (float): Proporción para test
-        random_state (int): Semilla para reproducibilidad
-        stratify (bool): Si mantener proporción de clases
-    
-    Returns:
-        tuple: (X_train, X_test, y_train, y_test)
-    """
-    print(f"✂️  Iniciando división train/test")
-    
-    # Usar parámetros personalizados o de configuración
-    target_col = target_column or MERGE_CONFIG["target_column"]
-    test_sz = test_size or SPLIT_CONFIG["test_size"]
-    rand_state = random_state or SPLIT_CONFIG["random_state"]
-    do_stratify = stratify if stratify is not None else SPLIT_CONFIG["stratify"]
-    
-    # Verificar que existe la columna objetivo
-    if target_col not in data.columns:
-        print(f"❌ Columna objetivo '{target_col}' no encontrada")
-        print(f"🔍 Columnas disponibles: {list(data.columns)}")
-        raise ValueError(f"Columna objetivo '{target_col}' no encontrada en el dataset")
-    
-    # Separar características (X) y variable objetivo (y)
-    X = data.drop(columns=[target_col])
-    y = data[target_col]
-    
-    # Configurar stratify
-    stratify_param = y if do_stratify else None
-    
-    print(f"🎯 Configuración de división:")
-    print(f"   📊 Target: '{target_col}'")
-    print(f"   📊 Test size: {test_sz}")
-    print(f"   📊 Random state: {rand_state}")
-    print(f"   📊 Stratify: {do_stratify}")
-    
-    # Dividir en train y test
-    X_train, X_test, y_train, y_test = train_test_split(
-        X, y, 
-        test_size=test_sz, 
-        random_state=rand_state,
-        stratify=stratify_param
-    )
-    
-    print(f"✅ División completada exitosamente:")
-    print(f"   📈 Train: {X_train.shape[0]} registros ({X_train.shape[0]/len(data)*100:.1f}%)")
-    print(f"   📊 Test: {X_test.shape[0]} registros ({X_test.shape[0]/len(data)*100:.1f}%)")
-    print(f"   🎯 Distribución train: {y_train.value_counts().to_dict()}")
-    print(f"   🎯 Distribución test: {y_test.value_counts().to_dict()}")
-    
-    return X_train, X_test, y_train, y_test
-
 def load_data(dataset_type="train", **kwargs):
     """
-    Función principal que carga, cruza y divide los datos
+    Función principal que carga y cruza los datos
     
     Args:
-        dataset_type (str): "train" para entrenamiento, "oot" para aplicación
+        dataset_type (str): "train" para entrenamiento, "oot" para evaluación (test)
         **kwargs: Parámetros adicionales para personalizar el comportamiento
     
     Returns:
-        Si dataset_type="train": tuple (X_train, X_test, y_train, y_test)
-        Si dataset_type="oot": pd.DataFrame (datos para scoring)
+        pd.DataFrame: Dataset combinado listo para usar
+            - Si dataset_type="train": datos de entrenamiento con target ATTRITION
+            - Si dataset_type="oot": datos de evaluación SIN target (para predicción)
     """
-    print(f"🚀 INICIANDO PIPELINE DE CARGA DE DATOS")
+    print(f"🚀 INICIANDO CARGA DE DATOS")
     print(f"📋 Tipo de dataset: {dataset_type}")
+    if dataset_type == "train":
+        print("🎯 Propósito: Entrenamiento del modelo")
+    else:
+        print("🎯 Propósito: Evaluación del modelo (Out of Time)")
     print("=" * 60)
     
     # Cargar y cruzar datos
     merged_data = load_and_merge_datasets(dataset_type, **kwargs)
     
-    if dataset_type == "train":
-        print("\n" + "=" * 60)
-        # Para datos de entrenamiento: dividir en train/test
-        result = split_train_test(merged_data, **kwargs)
-        print("=" * 60)
-        print("🎉 PIPELINE COMPLETADO EXITOSAMENTE")
-        return result
-    else:
-        # Para datos OOT: devolver dataset completo para scoring
-        print("=" * 60)
-        print(f"✅ Datos OOT listos para scoring: {merged_data.shape}")
-        print("🎉 PIPELINE COMPLETADO EXITOSAMENTE")
-        return merged_data
+    print("=" * 60)
+    print("🎉 CARGA COMPLETADA EXITOSAMENTE")
+    
+    return merged_data
 
 # Función de compatibilidad
 def load_data_legacy(file_path):
