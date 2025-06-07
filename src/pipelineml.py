@@ -1,8 +1,9 @@
 # filepath: /ml-pipeline-project/ml-pipeline-project/src/pipelineml.py
 import pandas as pd
-from data_loader import load_client_data
+from data_loader import load_client_data 
 from data_loader import load_reqs_data
 from data_preparation import clean_and_impute
+from data_preparation import prepare_data
 from model_trainer import train_model
 from model_registry import register_model
 
@@ -18,9 +19,12 @@ def main():
     df_clientes = clean_and_impute(df_clientes)
     df_reqs = clean_and_impute(df_reqs)
 
-    """
+    # Reemplazar funcion o parte del cruce de datasets
+    print("3. Combinando datasets...")
+    data = pd.merge(df_clientes, df_reqs, on="ID_CORRELATIVO", how="inner")
     # Prepare data
     X_train, X_test, y_train, y_test = prepare_data(data)
+    """
     
     # Train model
     model, accuracy = train_model(X_train, y_train, X_test, y_test)

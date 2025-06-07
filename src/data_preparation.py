@@ -41,14 +41,10 @@ def clean_and_impute(df):
     return df_clean
 
 
-"""
+
 def prepare_data(df):
     from sklearn.model_selection import train_test_split
-    import pandas as pd
 
-
-
-    df = df.drop(columns="SK_ID_CURR")
     # Imputar todos los valores nulos en variables numéricas por la mediana de cada variable
     df = df.fillna(df.median(numeric_only=True))
 
@@ -63,4 +59,4 @@ def prepare_data(df):
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.20)
     return X_train, X_test, y_train, y_test
     
-    """
+   
