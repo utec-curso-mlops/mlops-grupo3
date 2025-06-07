@@ -1,16 +1,24 @@
 # filepath: /ml-pipeline-project/ml-pipeline-project/src/pipelineml.py
 import pandas as pd
-from data_loader import load_data
-from data_preparation import prepare_data
+from data_loader import load_client_data
+from data_loader import load_reqs_data
+from data_preparation import clean_and_impute
 from model_trainer import train_model
 from model_registry import register_model
 
 # PRUEBA PREPROCESS
 
 def main():
-    # Load data
-    data = load_data("D:/Proyectos/mlflow/repositorios/Introduction-to-mlflow/data/in/application_data.csv")
-    
+
+    print("1. Cargando datos...")
+    df_clientes = load_client_data()
+    df_reqs = load_reqs_data()
+
+    print("2. Limpieza e imputación...")
+    df_clientes = clean_and_impute(df_clientes)
+    df_reqs = clean_and_impute(df_reqs)
+
+    """
     # Prepare data
     X_train, X_test, y_train, y_test = prepare_data(data)
     
@@ -21,6 +29,6 @@ def main():
 
     # Register model with MLflow
     register_model(model, model_name, n_estimators, accuracy)
-
+    """
 if __name__ == "__main__":
     main()
