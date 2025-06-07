@@ -8,7 +8,8 @@ from model_registry import register_model
 def main():
     # Load data
     data = load_data("D:/Proyectos/mlflow/repositorios/Introduction-to-mlflow/data/in/application_data.csv")
-    
+    # "C:\Users\AnaLisset\Desktop\curso MLOPS\Trabajo_Final\mlops-proyecto-final/data/in/"
+
     # Prepare data
     X_train, X_test, y_train, y_test = prepare_data(data)
     
