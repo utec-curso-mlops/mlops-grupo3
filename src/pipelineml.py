@@ -5,6 +5,8 @@ from data_preparation import prepare_data
 from model_trainer import train_model
 from model_registry import register_model
 
+# PRUEBA PREPROCESS
+
 def main():
     # Load data
     data = load_data("D:/Proyectos/mlflow/repositorios/Introduction-to-mlflow/data/in/application_data.csv")
