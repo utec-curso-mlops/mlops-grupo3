@@ -18,6 +18,9 @@ def main():
     df_clientes = clean_and_impute(df_clientes)
     df_reqs = clean_and_impute(df_reqs)
 
+    print("4. Entrenando modelo...")
+    # Opción 1: Usar tu función train_model() existente
+    train_model()  # Ejecuta el modelo
     """
     # Prepare data
     X_train, X_test, y_train, y_test = prepare_data(data)
