@@ -5,7 +5,6 @@ from sklearn.metrics import classification_report, roc_auc_score
 import joblib
 from data_preparation import get_prepared_dataset
 
-
 def train_model():
     # 1. Obtener el dataset procesado directamente
     df = get_prepared_dataset()
