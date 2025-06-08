@@ -40,7 +40,6 @@ def clean_and_impute(df):
 
     return df_clean
 
-
 """
 def prepare_data(df):
     from sklearn.model_selection import train_test_split
