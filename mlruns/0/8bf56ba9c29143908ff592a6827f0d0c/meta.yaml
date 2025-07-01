@@ -1,0 +1,15 @@
+artifact_uri: mlflow-artifacts:/0/8bf56ba9c29143908ff592a6827f0d0c/artifacts
+end_time: 1751345857508
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: 8bf56ba9c29143908ff592a6827f0d0c
+run_name: luminous-lynx-742
+run_uuid: 8bf56ba9c29143908ff592a6827f0d0c
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1751345855327
+status: 3
+tags: []
+user_id: narva

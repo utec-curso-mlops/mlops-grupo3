@@ -1,0 +1,28 @@
+name: CI/CD for Training Pipeline
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  training-pipeline:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Python setup
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Create training pipeline
+        run: python test_mlflow.py
+        env:
+          GITHUB_ACTOR: ${{ github.actor }}
