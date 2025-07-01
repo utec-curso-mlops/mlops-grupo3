@@ -22,7 +22,7 @@ jobs:
           pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Create training pipeline
+      - name: Run test_mlflow.py
         run: python test_mlflow.py
         env:
           GITHUB_ACTOR: ${{ github.actor }}
