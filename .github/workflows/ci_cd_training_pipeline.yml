@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - feature/github-actions/TheLast0602  # Agregar tu rama aquí
 
 jobs:
   training-pipeline:
